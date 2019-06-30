@@ -17,7 +17,9 @@ public class VideoTranscoder {
 
     private static FFmpeg ffmpeg;
     private static FFprobe ffprobe;
+    private static FFmpegExecutor executor;
     private static String InputFilePath = "in/input.mp4";
+    private static FFmpegProbeResult InputFileProbeResult;
 
     public static void main(String[] args) throws IOException {
         System.out.println("Start processing..!");
@@ -26,8 +28,11 @@ public class VideoTranscoder {
 
         try{
             InitFFMPEG();
-            File VideoOut = TransformVideo(InputFile);
-            //File AudioOut = TransformAudio(InputFile);
+
+            InputFileProbeResult = ffprobe.probe(InputFile.getAbsolutePath());
+
+            //File VideoOut = TransformVideo(InputFile);
+            File AudioOut = TransformAudio(InputFile);
             //File Mp4Packeg = PackingToMp4(VideoOut, AudioOut);
             //Mp4ToDASH(Mp4Packeg);
         } catch (IOException e){
@@ -38,15 +43,18 @@ public class VideoTranscoder {
     private static void InitFFMPEG() throws IOException {
         ffmpeg = new FFmpeg("/usr/bin/ffmpeg");
         ffprobe = new FFprobe("/usr/bin/ffprobe");
+        executor = new FFmpegExecutor(ffmpeg, ffprobe);
         System.out.println(ffmpeg.version());
     }
 
     private static File TransformVideo(File file) throws IOException{
 
+        String OutputFile = "out/video_throw.264";
+
         FFmpegBuilder builder = new FFmpegBuilder()
                 .setInput(file.getAbsolutePath())
                 .overrideOutputFiles(true)
-                .addOutput("out/video_throw.264")
+                .addOutput(OutputFile)
                     .setVideoCodec("libx264")
                     .setVideoBitRate(2000)
                     .setVideoFrameRate(24)//FPS
@@ -54,14 +62,10 @@ public class VideoTranscoder {
                 //.addExtraArgs()
                 .done();
 
-        FFmpegExecutor executor = new FFmpegExecutor(ffmpeg, ffprobe);
-
-        FFmpegProbeResult in = ffprobe.probe(InputFilePath);
-
         executor.createJob(builder, new ProgressListener() {
 
             // Using the FFmpegProbeResult determine the duration of the input
-            final double duration_ns = in.getFormat().duration * TimeUnit.SECONDS.toNanos(1);
+            final double duration_ns = InputFileProbeResult.getFormat().duration * TimeUnit.SECONDS.toNanos(1);
 
             @Override
             public void progress(Progress progress) {
@@ -80,11 +84,42 @@ public class VideoTranscoder {
             }
         }).run();
 
-        return new File("out/output.264");
+        return new File(OutputFile);
     }
 
     private static File TransformAudio(File file) throws IOException{
-        //..
+
+        String OutputFile = "out/output.aac";
+
+        FFmpegBuilder builder = new FFmpegBuilder()
+                .setInput(file.getAbsolutePath())
+                .overrideOutputFiles(true)
+                .addOutput(OutputFile)
+                .setAudioCodec("aac")
+                .done();
+
+        executor.createJob(builder, new ProgressListener() {
+
+            // Using the FFmpegProbeResult determine the duration of the input
+            final double duration_ns = InputFileProbeResult.getFormat().duration * TimeUnit.SECONDS.toNanos(1);
+
+            @Override
+            public void progress(Progress progress) {
+                double percentage = progress.out_time_ns / duration_ns;
+
+                // Print out interesting information about the progress
+                System.out.println(String.format(
+                        "[%.0f%%] status:%s frame:%d time:%s ms fps:%.0f speed:%.2fx",
+                        percentage * 100,
+                        progress.status,
+                        progress.frame,
+                        FFmpegUtils.toTimecode(progress.out_time_ns, TimeUnit.NANOSECONDS),
+                        progress.fps.doubleValue(),
+                        progress.speed
+                ));
+            }
+        }).run();
+
         return new File("out/output.aac");
     }
 
