@@ -1,4 +1,4 @@
-package ru.mybanana;
+package ru.mybanana.media;
 
 import net.bramp.ffmpeg.FFmpeg;
 import net.bramp.ffmpeg.FFmpegExecutor;
@@ -8,6 +8,7 @@ import net.bramp.ffmpeg.builder.FFmpegBuilder;
 import net.bramp.ffmpeg.probe.FFmpegProbeResult;
 import net.bramp.ffmpeg.progress.Progress;
 import net.bramp.ffmpeg.progress.ProgressListener;
+import ru.mybanana.tools.Config;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,11 +21,17 @@ public class VideoTranscoder {
     private static FFmpeg ffmpeg;
     private static FFprobe ffprobe;
     private static FFmpegExecutor executor;
-    private static String InputFilePath = "in/input.mp4";
     private static FFmpegProbeResult InputFileProbeResult;
+    private String InputFilePath;
 
-    public static void main(String[] args) throws IOException {
-        System.out.println("Start processing..!");
+    public VideoTranscoder(String InputFilePath){
+        this.InputFilePath = InputFilePath;
+    }
+
+    public void start() throws IOException {
+        Config config = new Config();
+        System.out.println(config.getFFmpegLocation());
+        /*System.out.println("Start processing file "+InputFilePath);
 
         File InputFile = new File(InputFilePath);
 
@@ -35,14 +42,12 @@ public class VideoTranscoder {
 
             File VideoOut = TransformVideo(InputFile);
             File AudioOut = TransformAudio(InputFile);
-            //File VideoOut = new File("in/input_video_b2000k.264");
-            //File AudioOut = new File("in/input_audio_b128k.aac");
             File Mp4VideoPackeg = PackingToMp4(VideoOut, "video");
             File Mp4AudioPackeg = PackingToMp4(AudioOut, "audio");
             Mp4ToDASH(Mp4VideoPackeg, Mp4AudioPackeg);
         } catch (IOException e){
             e.printStackTrace();
-        }
+        }*/
     }
 
     private static void InitFFMPEG() throws IOException {
@@ -149,6 +154,8 @@ public class VideoTranscoder {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        ContentThrow.delete();
+
         return new File(OutputFile);
     }
 
@@ -173,6 +180,8 @@ public class VideoTranscoder {
             if (exitVal == 0) {
                 System.out.println("Manifest complete");
                 System.out.println(output);
+                Mp4VideoContainer.delete();
+                Mp4AudioContainer.delete();
                 System.exit(0);
             } else {
                 //abnormal...
