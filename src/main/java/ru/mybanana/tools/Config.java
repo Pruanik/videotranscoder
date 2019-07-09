@@ -7,13 +7,15 @@ import java.util.Properties;
 
 public class Config {
 
-    Properties property = new Properties();
-    FileInputStream file;
+    private static Config instance;
+    private Properties property;
+    private FileInputStream file;
 
-    public Config(){
+    private Config(){
         try {
 
             file = new FileInputStream("src/main/resources/config.properties");
+            property = new Properties();
             property.load(file);
 
         } catch (FileNotFoundException e) {
@@ -22,6 +24,13 @@ public class Config {
             e.printStackTrace();
         }
 
+    }
+
+    public static Config getInstance(){
+        if(instance==null){
+            instance = new Config();
+        }
+        return instance;
     }
 
     public String getFFmpegLocation(){
