@@ -10,39 +10,39 @@ import java.util.HashMap;
 public class VideoTranscoder {
 
 //    private static FFmpegProbeResult InputFileProbeResult;
-    private File InputFile;
-    private FFmpegControl FFmpeg;
-    private FFprobeControl FFprobe;
-    private HashMap<String, Long> MediaInfo;
+  //  private File InputFile;
+  //  private FFmpegControl FFmpeg;
+  //  private FFprobeControl FFprobe;
+  //  private HashMap<String, Long> MediaInfo;
+
+    private Video video;
 
 
     public VideoTranscoder(String InputFilePath){
-        try {
-            InputFile = new File(InputFilePath);
-            FFmpeg = new FFmpegControl();
-            FFprobe = new FFprobeControl();
-            MediaInfo = new HashMap<>();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
+
+        video = new Video(InputFilePath);
 
     }
 
     public void start() throws IOException {
         try {
-            FFmpeg.showVersion();
-            MediaInfo = FFprobe.getMediaInfo(InputFile);
+
+            video
+                    .transformVideo()
+                    .transformAudio()
+                    .packToMP4()
+                    .getDASH();
+
         } catch (NullPointerException e){
+
             e.printStackTrace();
+
         }
 
-        System.out.println("ff");
-        //System.out.println(Config.getInstance().getFFmpegLocation());
-        /*System.out.println("Start processing file "+InputFilePath);
 
-        File InputFile = new File(InputFilePath);
 
-        try{
+
+ /*       try{
             InitFFMPEG();
 
             InputFileProbeResult = ffprobe.probe(InputFile.getAbsolutePath());
