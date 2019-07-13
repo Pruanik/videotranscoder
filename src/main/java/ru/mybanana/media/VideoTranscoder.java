@@ -13,7 +13,7 @@ public class VideoTranscoder {
     private File InputFile;
     private FFmpegControl FFmpeg;
     private FFprobeControl FFprobe;
-    private HashMap<String, String> MediaInfo;
+    private HashMap<String, Long> MediaInfo;
 
 
     public VideoTranscoder(String InputFilePath){
@@ -35,6 +35,8 @@ public class VideoTranscoder {
         } catch (NullPointerException e){
             e.printStackTrace();
         }
+
+        System.out.println("ff");
         //System.out.println(Config.getInstance().getFFmpegLocation());
         /*System.out.println("Start processing file "+InputFilePath);
 

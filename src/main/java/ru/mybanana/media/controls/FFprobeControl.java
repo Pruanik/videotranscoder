@@ -17,14 +17,24 @@ public class FFprobeControl {
         ffprobe = new FFprobe(Config.getInstance().getFFprobeLocation());
     }
 
-    public HashMap<String, String> getMediaInfo(File file){
+    public HashMap<String, Long> getMediaInfo(File file){
+
+        HashMap<String, Long> hashMap = new HashMap<>();
+
         try {
+
             FFmpegProbeResult probeResult = ffprobe.probe(file.getAbsolutePath());
-            FFmpegStream stream = probeResult.getStreams().get(0);
-            //System.out.println(stream.codec_long_name);
+            FFmpegStream video_stream = probeResult.getStreams().get(0);
+            FFmpegStream audio_stream = probeResult.getStreams().get(1);
+
+            hashMap.put("video.bitrate", video_stream.bit_rate);
+            hashMap.put("video.fps", video_stream.avg_frame_rate.longValue());
+            hashMap.put("audio.bitrate", audio_stream.bit_rate);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+
+        return hashMap;
     }
 }

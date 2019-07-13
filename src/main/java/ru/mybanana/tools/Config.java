@@ -41,4 +41,31 @@ public class Config {
         return property.getProperty("ffprobe.location");
     }
 
+    public Integer getSettingsAppSegmentSize() {
+        try {
+            return Integer.parseInt(property.getProperty("settings.app.segment_size"));
+        } catch (NumberFormatException e){
+            System.out.println("Parametr segment_size is not correct");
+        }
+        return 0;
+    }
+
+    public Integer getSettingsAppMaxrateFactor() {
+        try {
+            return Integer.parseInt(property.getProperty("settings.app.maxrate_factor"));
+        } catch (NumberFormatException e){
+            System.out.println("Parametr segment_size is not correct");
+        }
+        return 0;
+    }
+
+    public Integer getSettingsAppBufsizeFactor() {
+        try {
+            return Integer.parseInt(property.getProperty("settings.app.bufsize_factor"));
+        } catch (NumberFormatException e){
+            System.out.println("Parametr segment_size is not correct");
+        }
+        return 0;
+    }
+
 }
