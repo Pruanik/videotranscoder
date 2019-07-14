@@ -1,0 +1,43 @@
+{
+  "name": "videotranscoder",
+  "version": "1.0.0",
+  "description": "****Программа выполняющая транскодирование видео для подготовки к стримингу по протоколу DASH.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pruanik/videotranscoder.git"
+  },
+  "author": "pruanik",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Pruanik/videotranscoder/issues"
+  },
+  "homepage": "https://github.com/Pruanik/videotranscoder#readme",
+  "dependencies": {
+    "jquery": "^3.4.1",
+    "uikit": "^3.1.6",
+    "vue": "^2.6.10",
+    "vue-resource": "^1.5.1",
+    "vuex": "^3.1.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "babel-minify": "^0.3.0",
+    "babel-preset-env": "^1.6.1",
+    "browser-sync-webpack-plugin": "^2.2.2",
+    "css-loader": "^0.28.11",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "html-loader": "^0.5.5",
+    "node-sass": "^4.8.3",
+    "sass-loader": "^6.0.7",
+    "vue-loader": "^15.7.0",
+    "webpack": "^4.35.3",
+    "webpack-cli": "^3.3.6",
+    "webpack-dev-server": "^3.7.2"
+  }
+}

@@ -2,6 +2,8 @@
 in/
 out/
 notes/
+node_modules/
 target/
 *.log
 *.log.mbtree
+*.iml
