@@ -1,7 +1,5 @@
 .idea/
-in/
-out/
-notes/
+storage/
 node_modules/
 target/
 *.log
