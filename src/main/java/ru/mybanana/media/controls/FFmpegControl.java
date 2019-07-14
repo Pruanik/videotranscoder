@@ -3,6 +3,7 @@ package ru.mybanana.media.controls;
 import net.bramp.ffmpeg.FFmpeg;
 import net.bramp.ffmpeg.FFmpegExecutor;
 import net.bramp.ffmpeg.builder.FFmpegBuilder;
+import ru.mybanana.media.VideoMediaInfo;
 import ru.mybanana.tools.Config;
 import ru.mybanana.tools.ProgressLogger;
 
@@ -33,29 +34,41 @@ public class FFmpegControl {
         return ffmpeg;
     }
 
-    public void transformVideo(FFmpegExecutor executor, FFmpegBuilder builder, HashMap<String, Long> mediaInfo, String inputFile, String outputFile){
+    public void transformVideo(FFmpegExecutor executor, FFmpegBuilder builder, VideoMediaInfo mediaInfo, String inputFile, String outputFile){
 
-        long maxrate = mediaInfo.get("video.bitrate")*Config.getInstance().getSettingsAppMaxrateFactor();
-        long bufsize = mediaInfo.get("video.bitrate")*Config.getInstance().getSettingsAppBufsizeFactor();
-        long keyint  = mediaInfo.get("video.fps")*Config.getInstance().getSettingsAppSegmentSize();
+        long maxrate = mediaInfo.getVideoBitrate()*Config.getInstance().getSettingsAppMaxrateFactor();
+        long bufsize = mediaInfo.getVideoBitrate()*Config.getInstance().getSettingsAppBufsizeFactor();
+        long keyint  = mediaInfo.getVideoFps()*Config.getInstance().getSettingsAppSegmentSize();
 
         builder.setInput(inputFile)
                 .overrideOutputFiles(true)
                 .addOutput(outputFile)
                 .setVideoCodec("libx264")
                 .addExtraArgs("-preset", "slow")
-                .setVideoFrameRate(mediaInfo.get("video.fps"))//FPS
-                .setVideoBitRate(mediaInfo.get("video.bitrate"))
+                .setVideoFrameRate(mediaInfo.getVideoFps())//FPS
+                .setVideoBitRate(mediaInfo.getVideoBitrate())
                 .addExtraArgs("-maxrate", String.valueOf(maxrate))
                 .addExtraArgs("-bufsize", String.valueOf(bufsize))
-                .addExtraArgs("-keyint", String.valueOf(keyint))
-                .addExtraArgs("-min-keyint", String.valueOf(keyint))
-                .addExtraArgs("-scenecut", "0")
-                .addExtraArgs("-no-scenecut", "0")
+                .addExtraArgs("-x264opts", "keyint="+String.valueOf(keyint)+":min-keyint="+String.valueOf(keyint)+":scenecut=0:no-scenecut")
                 .addExtraArgs("-pass", "1")
-                .setVideoResolution(mediaInfo.get("video.width").intValue(), mediaInfo.get("video.height").intValue())
-                //.addExtraArgs()
+                .setVideoResolution(mediaInfo.getVideoWidth(), mediaInfo.getVideoHeight())
                 .done();
+        try {
+            executor.createJob(builder, new ProgressLogger(inputFile) ).run();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void transformAudio(FFmpegExecutor executor, FFmpegBuilder builder, VideoMediaInfo mediaInfo, String inputFile, String outputFile){
+
+        builder.setInput(inputFile)
+                .overrideOutputFiles(true)
+                .addOutput(outputFile)
+                .setAudioCodec("aac")
+                .setAudioBitRate(mediaInfo.getAudioBitrate())
+                .done();
+
         try {
             executor.createJob(builder, new ProgressLogger(inputFile) ).run();
         } catch (IOException e) {

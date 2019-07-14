@@ -3,3 +3,5 @@ in/
 out/
 notes/
 target/
+*.log
+*.log.mbtree

@@ -5,8 +5,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class BashOperation {
-    private static void console(){
-        ProcessBuilder processBuilder = new ProcessBuilder("ping", "google.com");
+
+    public static void console(String command){
+
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        processBuilder.command("bash", "-c", command);
+
         try {
 
             Process process = processBuilder.start();
@@ -33,4 +37,5 @@ public class BashOperation {
             e.printStackTrace();
         }
     }
+
 }
