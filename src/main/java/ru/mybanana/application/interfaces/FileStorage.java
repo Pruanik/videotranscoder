@@ -1,4 +1,4 @@
-package ru.mybanana.application.service;
+package ru.mybanana.application.interfaces;
 
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
@@ -6,17 +6,23 @@ import org.springframework.web.multipart.MultipartFile;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 
-public interface StorageService {
-
+public interface FileStorage {
     void init();
+
+    String lastName = null;
+
+    void addName(String name);
+
+    String getName();
 
     void store(MultipartFile file);
 
     Stream<Path> loadAll();
 
-    Path load(String fileName);
+    Path load(String filename);
 
-    Resource loadAsResource(String fileName);
+    Resource loadAsResource(String filename);
 
     void deleteAll();
 }
+

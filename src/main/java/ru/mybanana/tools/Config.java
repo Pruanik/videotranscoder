@@ -14,7 +14,7 @@ public class Config {
     private Config(){
         try {
 
-            file = new FileInputStream("src/main/resources/config.properties");
+            file = new FileInputStream("src/main/resources/application.properties");
             property = new Properties();
             property.load(file);
 
@@ -67,5 +67,9 @@ public class Config {
         }
         return 0;
     }
+    public String getFilestoragePath(){
+        return property.getProperty("settings.app.filestorage.path");
+    }
+
 
 }
