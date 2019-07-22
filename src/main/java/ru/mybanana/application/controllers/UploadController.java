@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.mybanana.application.interfaces.FileStorage;
+import ru.mybanana.application.models.Video;
+import ru.mybanana.application.repository.VideoRepository;
 import ru.mybanana.application.services.SystemFileStorage;
 import ru.mybanana.media.VideoTranscoder;
 
@@ -40,6 +42,12 @@ public class UploadController {
             e.printStackTrace();
         }
         redirectAttributes.addFlashAttribute("message", "Uploaded "+file.getOriginalFilename()+" - seccess");
-        return "redirect:/";
+        //model.addAttribute("message", name);
+        Video video = new Video();
+        video.setName(file.getOriginalFilename());
+        //VideoRepository.save(video);
+
+        //return "redirect:/";
+        return "upload";
     }
 }
