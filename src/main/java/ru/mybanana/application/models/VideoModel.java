@@ -7,7 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Video {
+public class VideoModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -16,9 +16,18 @@ public class Video {
 
     private String url;
 
-    private Long duration;
+    private Float duration;
 
     private String imagePreview;
+
+    public VideoModel(){}
+
+    public VideoModel(String name,String url,Float duration,String imagePreview){
+        this.name = name;
+        this.url = url;
+        this.duration = duration;
+        this.imagePreview = imagePreview;
+    }
 
     public Integer getId() {
         return id;
@@ -44,11 +53,11 @@ public class Video {
         this.url = url;
     }
 
-    public Long getDuration() {
+    public Float getDuration() {
         return duration;
     }
 
-    public void setDuration(Long duration) {
+    public void setDuration(Float duration) {
         this.duration = duration;
     }
 

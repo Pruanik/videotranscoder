@@ -5,14 +5,9 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 module.exports = env => { return {
     mode: 'development',
     entry: path.join(__dirname, 'src', 'main', 'resources', 'assets', 'js', 'index.js'),
-    devtool: 'source-map',
-    devServer: {
-        contentBase: './dist',
-        compress: true,
-        port:8000,
-        allowedHosts: [
-            'localhost:8080'
-        ]
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'index.bundle.js'
     },
     module: {
         rules: [

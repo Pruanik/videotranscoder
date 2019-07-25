@@ -4,7 +4,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import ru.mybanana.application.services.SystemFileStorage;
+import ru.mybanana.application.services.FileStorage;
 
 @SpringBootApplication
 public class App {
@@ -14,10 +14,10 @@ public class App {
     }
 
     @Bean
-    CommandLineRunner init(SystemFileStorage storageService) {
+    CommandLineRunner init(FileStorage fileStorage) {
         return (args) -> {
-            storageService.deleteAll();
-            storageService.init();
+            fileStorage.deleteAll();
+            fileStorage.init();
         };
     }
 
