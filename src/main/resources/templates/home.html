@@ -1,10 +1,11 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>watch room</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<head th:replace="layouts/main :: head(~{this :: title})">
+    <title>Main | Watch Room</title>
 </head>
 <body>
-<p>Загрузи свое видео по <a href="/upload/">ссылке</a></p>
+<div th:insert="layouts/main :: content(~{ :: #content})">
+    <div id="content"><p>Загрузи свое видео по <a href="/upload/">ссылке</a></p></div>
+</div>
 </body>
 </html>

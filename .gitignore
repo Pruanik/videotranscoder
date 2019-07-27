@@ -1,4 +1,5 @@
 .idea/
+assets/
 storage/
 node_modules/
 target/

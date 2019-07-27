@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+    <title th:replace="${title}">Watch Room</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="/assets/css/index.bundle.css" rel="stylesheet" th:href="@{/assets/css/index.bundle.css}"/>
+</head>
+<body>
+<div th:fragment="header"></div>
+<div th:fragment="content(value)" th:insert="${value}"></div>
+<div th:fragment="footer"></div>
+<script src="/resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+</body>
+</html>
