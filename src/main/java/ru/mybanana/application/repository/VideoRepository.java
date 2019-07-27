@@ -1,7 +1,7 @@
 package ru.mybanana.application.repository;
 
 import org.springframework.data.repository.CrudRepository;
-import ru.mybanana.application.models.VideoModel;
+import ru.mybanana.application.models.Videos;
 
-public interface VideoRepository extends CrudRepository<VideoModel, Integer> {
+public interface VideoRepository extends CrudRepository<Videos, Integer> {
 }

@@ -1,13 +1,12 @@
 package ru.mybanana.application.models;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-public class VideoModel {
+public class Videos {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -20,13 +19,24 @@ public class VideoModel {
 
     private String imagePreview;
 
-    public VideoModel(){}
+    private String description;
 
-    public VideoModel(String name,String url,Float duration,String imagePreview){
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "videos_tags",
+            joinColumns = { @JoinColumn(name = "video_id") },
+            inverseJoinColumns = { @JoinColumn(name = "tag_id") }
+    )
+    private List<Tags> tags = new ArrayList<>();
+
+    public Videos(){}
+
+    public Videos(String name, String url, Float duration, String imagePreview, String description){
         this.name = name;
         this.url = url;
         this.duration = duration;
         this.imagePreview = imagePreview;
+        this.description = description;
     }
 
     public Integer getId() {
@@ -68,4 +78,15 @@ public class VideoModel {
     public void setImagePreview(String imagePreview) {
         this.imagePreview = imagePreview;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+
+
 }
