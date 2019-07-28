@@ -6,9 +6,9 @@
     <link href="/assets/css/index.bundle.css" rel="stylesheet" th:href="@{/assets/css/index.bundle.css}"/>
 </head>
 <body>
-<div th:fragment="header"></div>
+<div th:insert="~{../fragments/header :: header}"></div>
 <div th:fragment="content(value)" th:insert="${value}"></div>
-<div th:fragment="footer"></div>
+<div th:insert="~{../fragments/footer :: footer}"></div>
 <script src="/resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
 </body>
 </html>

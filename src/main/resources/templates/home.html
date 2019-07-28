@@ -4,8 +4,11 @@
     <title>Main | Watch Room</title>
 </head>
 <body>
-<div th:insert="layouts/main :: content(~{ :: #content})">
-    <div id="content"><p>Загрузи свое видео по <a href="/upload/">ссылке</a></p></div>
-</div>
+<!-- <div th:insert="layouts/main :: content(~{ :: #content})"> -->
+    <div th:insert="~{fragments/header :: header}"></div>
+    <div id="content">
+        <p>Загрузи свое видео по <a href="/upload/">ссылке</a></p>
+    </div>
+<!-- </div> -->
 </body>
 </html>
